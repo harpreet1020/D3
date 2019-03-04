@@ -58,7 +58,7 @@ d3.csv('assets/data/data.csv')
 
     // Step 5: Create circles
     // ======================
-    var circlesGroup = chartGroup.selectAll('circle')
+    chartGroup.selectAll('circle')
         .data(scatterData)
         .enter()
         .append('circle')
@@ -66,29 +66,26 @@ d3.csv('assets/data/data.csv')
         .attr('cy', data => yLinearScale(data.obesity))
         .attr('r', '12.5')
         .attr('fill', 'pink')
-        .attr('opacity', '0.4');
+        .attr('opacity', '0.4')
+    
 
-    // // First attempt to display State Abbreviations in plot circles
-    // circlesGroup.append('text')
-    //     .attr("text-anchor", "middle")
-    //     .attr("class","stateText")
-    //     .style("fill", "black")
-    //     .style("font", "10px sans-serif")
-    //     .style("font-weight", "bold")
-    //     .attr("x", function(data) { return (data.income); })
-    //     .attr("y", function(data) { return (data.obesity); })
-    //     .attr("dx", ".71em")
-    //     .attr("dy", ".35em")
-    //     .text(data => data.abbr);
-
-    // Second Attempt
-    circlesGroup.append("text")
-        .text(function(data){return data.abbr;})
-        .attr("x", function(data, index) { return (data.income[index]); })
-        .attr("y", function(data, index) { return (data.obesity[index]); });
-
-
-    // Create Axes Labels
+    // Step 6: Append state abbreviations 
+    // ======================
+    chartGroup.selectAll('#abbr')
+        .data(scatterData)
+        .enter()
+        .append("text")
+        .attr("x", d => xLinearScale(d.income))
+        .attr("y", d => yLinearScale(d.obesity))
+        .text(d => d.abbr)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "8px")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("fill", "black");
+    
+    // Step 7: Creat Axis Labels
+    // ======================
     chartGroup.append('text')
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left)
